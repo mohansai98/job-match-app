@@ -1,24 +1,23 @@
 import React from 'react';
+import { Input } from 'antd';
+
+const { TextArea } = Input;
 
 interface JobDescriptionInputProps {
-  value: string;
-  onChange: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
+  onDescriptionChange: (description: string) => void;
 }
 
-export const JobDescriptionInput: React.FC<JobDescriptionInputProps> = ({ value, onChange }) => {
+const JobDescriptionInput: React.FC<JobDescriptionInputProps> = ({ onDescriptionChange }) => {
   return (
-    <div className="mb-4">
-      <label htmlFor="jobDescription" className="block text-sm font-medium text-gray-700">
-        Job Description
-      </label>
-      <textarea
-        id="jobDescription"
-        value={value}
-        onChange={onChange}
-        rows={6}
-        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+    <div>
+      <h3>Job Description</h3>
+      <TextArea
+        rows={9}
+        onChange={(e) => onDescriptionChange(e.target.value)}
         placeholder="Paste the job description here..."
-      ></textarea>
+      />
     </div>
   );
 };
+
+export default JobDescriptionInput;

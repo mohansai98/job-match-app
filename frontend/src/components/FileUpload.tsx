@@ -1,34 +1,55 @@
 import React from 'react';
+import { Upload, message } from 'antd';
+import { InboxOutlined } from '@ant-design/icons';
+
+const { Dragger } = Upload;
 
 interface FileUploadProps {
-  onFileUpload: (file: File) => void;
+  onFileSelect: (file: File) => void;
 }
 
-export const FileUpload: React.FC<FileUploadProps> = ({ onFileUpload }) => {
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      onFileUpload(file);
-    }
+const FileUpload: React.FC<FileUploadProps> = ({ onFileSelect }) => {
+  const props = {
+    name: 'file',
+    multiple: false,
+    accept: '.pdf,.docx,.txt',
+    onChange(info: any) {
+      const { status } = info.file;
+      if (status !== 'uploading') {
+        console.log(info.file, info.fileList);
+      }
+      if (status === 'done') {
+        message.success(`${info.file.name} file uploaded successfully.`);
+        onFileSelect(info.file.originFileObj);
+      } else if (status === 'error') {
+        message.error(`${info.file.name} file upload failed.`);
+      }
+    },
+    beforeUpload: (file: File) => {
+      if (document.querySelectorAll('.ant-upload-list-item').length > 0) {
+        message.error('You can only upload one file.');
+        return Upload.LIST_IGNORE;
+      }
+
+      onFileSelect(file);
+      return false;
+    },
   };
 
   return (
-    <div className="mb-4">
-      <label htmlFor="resume" className="block text-sm font-medium text-gray-700">
-        Upload Resume
-      </label>
-      <input
-        type="file"
-        id="resume"
-        accept=".pdf,.docx"
-        onChange={handleFileChange}
-        className="mt-1 block w-full text-sm text-gray-500
-          file:mr-4 file:py-2 file:px-4
-          file:rounded-full file:border-0
-          file:text-sm file:font-semibold
-          file:bg-blue-50 file:text-blue-700
-          hover:file:bg-blue-100"
-      />
+    <div>
+    <h3>Resume</h3>
+    <Dragger {...props}>
+      <p className="ant-upload-drag-icon">
+        <InboxOutlined />
+      </p>
+      <p className="ant-upload-text">Click or drag file to this area to upload</p>
+      <p className="ant-upload-hint">
+        Support for a single upload of types: .pdf, .docx, .txt
+      </p>
+    </Dragger>
     </div>
   );
 };
+
+export default FileUpload;

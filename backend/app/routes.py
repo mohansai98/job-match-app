@@ -14,12 +14,11 @@ def analyze():
         return jsonify({"error": "No resume file"}), 400
     
     resume = request.files['resume']
-    job_description = request.form.get('job_description')
+    job_description = request.form.get('jobDescription')
     
     if resume.filename == '' or not allowed_file(resume.filename):
         return jsonify({"error": "Invalid file"}), 400
-    print(resume.filename)
-    print(job_description)
+
     if resume and job_description:
         print("Received resume and job description")
         filename = secure_filename(resume.filename)
