@@ -18,6 +18,10 @@ def analyze():
     
     if resume.filename == '' or not allowed_file(resume.filename):
         return jsonify({"error": "Invalid file"}), 400
+    
+    # Create the uploads folder if it doesn't exist
+    if not os.path.exists(current_app.config['UPLOAD_FOLDER']):
+        os.makedirs(current_app.config['UPLOAD_FOLDER'])
 
     if resume and job_description:
         print("Received resume and job description")
