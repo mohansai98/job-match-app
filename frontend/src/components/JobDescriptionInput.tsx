@@ -12,7 +12,8 @@ const JobDescriptionInput: React.FC<JobDescriptionInputProps> = ({ onDescription
     <div>
       <h3>Job Description</h3>
       <TextArea
-        rows={9}
+        name='jobDescription'
+        rows={8}
         onChange={(e) => onDescriptionChange(e.target.value)}
         placeholder="Paste the job description here..."
       />
