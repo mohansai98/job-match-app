@@ -4,7 +4,6 @@ import os
 from app.utils import allowed_file
 # from app.llama_api import analyze_resume_and_job
 from app.openai_api import analyze_resume_and_job
-import json
 
 bp = Blueprint('main', __name__)
 
@@ -35,7 +34,7 @@ def analyze():
             analysis_result = analyze_resume_and_job(resume_path, job_description)
             os.remove(resume_path) 
             print("Analysis complete")
-            return json.loads(analysis_result)
+            return jsonify(analysis_result)
         except Exception as e:
             # os.remove(resume_path) 
             return str(e), 500
